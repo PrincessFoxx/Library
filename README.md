@@ -56,7 +56,7 @@ If you have entered the correct email and password you will be taken to the dash
 - [x] Changing/altering object properties
 - [x] Creating a complex design using the IDE designer
 - [x] Creating and use simple primitives (variables)
-- [x] creating and using variables in a more complex way and converting between different types
+- [x] Creating and using variables in a more complex way and converting between different types
 - [x] Use of simple selection (if, if/else, if/else if/else)
 - [x] Use of complex selection (nested if, if with multiple conditions or else if)
 - [x] Use of loops (for, while)
@@ -78,7 +78,7 @@ If you have entered the correct email and password you will be taken to the dash
 - [x] Use of a class that incorporates encapsulation into the class design
 - [ ] Use of abstract methods/properties within a class so as it can be used without instantiation
 - [x] Use of multiple classes that incorporates inheritance into the design
-- [ ] Use of a sub-class that over-rides a method from its super class
+- [ ] Use of a sub-class that overrides a method from its super class
 - [ ] Proper use of polymorphic constructor methods within a class  <!-- make it so constructor can be done difrent ways -->
 - [ ] Use of inheritance to shown polymorphism of various classes of the same type
 - [x] Use of graphical imported libraries or utility libraries
