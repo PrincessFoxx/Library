@@ -5,7 +5,7 @@
 For this project I plain to make a stupid simple book library that a user can check out a book and a admin can add, edit and remove books. Along with checking books back in.
 
 ## How do I envision this looking like?
-As a byproduct from a mental illness I have named [Aphantasia](https://en.wikipedia.org/wiki/Aphantasia) I can not imagine things. As you might guess this made it dificalt to make my site look good, so my proses insted of imagining it, I just use a WYSIWYG editor to drag stuff around and make it look good. The editor I chose was [Bootstrap Studio](https://bootstrapstudio.io/).
+As a byproduct from a mental illness I have named [Aphantasia](https://en.wikipedia.org/wiki/Aphantasia) I can not imagine things. As you might guess this made it difficult to make my site look good, so my process insted of imagining it, I just used a WYSIWYG editor to drag stuff around and make it look good. The editor I chose was [Bootstrap Studio](https://bootstrapstudio.io/).
 
 ## Goals
 ### 30S Goals
