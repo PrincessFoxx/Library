@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>Products - Brand</title>
+    <meta name="twitter:description" content="A example project I made for a Computer Science course" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:image" content="assets/img/Library-banner.png" />
+    <meta property="og:type" content="website" />
+    <meta name="description" content="A example project I made for a Computer Science course" />
+    <meta name="twitter:image" content="assets/img/Library-banner.png" />
+    <meta name="twitter:title" content="Foxx's Library" />
+    <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="assets/img/LibraryIcon.png" />
+    <link rel="icon" type="image/png" sizes="180x180" href="assets/img/LibraryIcon.png" />
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/Inter.css" />
+    <link rel="stylesheet" href="assets/css/untitled.css" />
+    <link rel="stylesheet" href="assets/css/foxx.css" />
+
+    <!-- FA -->
+    <script src="https://kit.fontawesome.com/e4c189c8f1.js" crossorigin="anonymous"></script>
+
+    <style>
+      .card {
+        /* make a border */
+        border: 1px solid #1d1d22;
+        text-align: center
+      }
+
+      .card-group {
+        margin-bottom: 30px;
+      }
+
+      .card-img-top {
+        width: 100%;
+        height: max(15vw, 150px);
+        object-fit: cover;
+      }
+
+      .star-rating {
+        line-height: 32px;
+        font-size: 1.25em;
+      }
+
+      .fa-star-o {
+        color: #ccc;
+      }
+
+      .fa-star {
+        color: #f8ce0b;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-dark navbar-expand-md sticky-top navbar-shrink py-3" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+          <span class="bs-icon-sm d-flex justify-content-center align-items-center me-2 bs-icon">
+            <img src="assets/img/LibraryIcon.png" style="width: 100%; height: 100%; object-fit: cover;" />
+          </span>
+          <span>Foxx's Library</span>
+        </a>
+        <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navcol-1">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <form class="d-flex">
+
+                <div class="input-group">
+                  <select class="form-select" id="inputGroupSelect04" aria-label="">
+                    <option selected>Search by...</option>
+                    <option value="1">Title</option>
+                    <option value="2">Author</option>
+                    <option value="3">Genre</option>
+                  </select>
+                  <input type="text" class="form-control search" aria-label="Text input with dropdown button" placeholder='TODO: make work'>
+                  <button class="btn btn-outline-primary" type="button" id="button-addon2">Search</button>
+                </div>
+              </form>
+            </li>
+          </ul>
+          <a class="btn btn-primary shadow" role="button" href="/login">Login</a>
+        </div>
+      </div>
+    </nav>
+
+    <section class="py-5">
+      <!-- Start: Team -->
+      <div class="container py-5">
+        <div class="row mb-4 mb-lg-5">
+          <div class="col-md-8 col-xl-6 text-center mx-auto">
+            <h2 class="fw-bold">All books</h2>
+            <p class="text-muted w-lg-50">All books in the library</p>
+          </div>
+        </div>
+        <div class="row mx-auto">
+          <div class="col">
+            {{cardList|raw }}
+          </div>
+        </div>
+      </div>
+      <!-- End: Team -->
+    </section>
+    <!-- Start: Footer Multi Column -->
+    <footer class="bg-dark"></footer>
+    <!-- End: Footer Multi Column -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="assets/js/bold-and-dark.js"></script>
+  </body>
+</html>
