@@ -34,6 +34,15 @@
       private UserManager $userManager = new UserManager()
     ) {}
 
+    /**
+     * process
+     * 
+     * Is the function that is used to process the request
+     *
+     * @param ServerRequestInterface $request The request that is being processed
+     * @param RequestHandlerInterface $handler The handler that is being used to handle the request
+     * @return ResponseInterface The response that is being returned
+     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface {
       if(isset($_SESSION["user"])) { // If the user is logged in
         /**
