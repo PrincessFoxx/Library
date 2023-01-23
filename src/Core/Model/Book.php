@@ -259,8 +259,12 @@
      */
     function isLoaned(): bool {
       if (count($this->loan) == 0) return false;
+
+      /**
+       * @var Loan $lastLoan
+       */
       $lastLoan = end($this->loan);
-      return !empty($lastLoan) ? !$lastLoan->getReturned() : false;
+      return !empty($lastLoan) ? !$lastLoan->get(LoanGetBy::RETURNED) : false;
     }
 
     /**

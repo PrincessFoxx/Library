@@ -28,15 +28,16 @@
      */
     public function __construct(
       private string $userId,
-      private string $date,
-      private string $due,
-      private bool $returned,
-      private ?string $returned_date,
-      private string $id
+      private ?string $date = null,
+      private ?string $due = null,
+      private ?bool $returned = null,
+      private ?string $returned_date = null,
+      private ?string $id = null
     ) {
       $date = date('Y-m-d');
       $due = strtotime($date . " + 2 weeks");
       $id = uniqid("loan_");
+      $returned = false;
     }
 
     /**
