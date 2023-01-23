@@ -133,7 +133,7 @@ I met all of the goals I set for myself! I am very happy with the result of this
 
 ## What did I learn?
 - Middleware - I learned what middleware is and how to use it.
-- OOP - Because I was asking for help form a friend they suggested I use OOP. I learned how to apply the OOP model to php.
+- OOP - Because I was asking for help from a friend they suggested I use OOP. I learned how to apply the OOP model to php.
 - MVC - I learned what MVC is and how to use it.
 - Database - I learned how to make a database out of json.
 
