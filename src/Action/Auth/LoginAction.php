@@ -87,10 +87,10 @@
         $_SESSION["user"] = $user->id();
 
         if ($accountType == UserTypes::ADMIN) { // If the user is an admin
-          return $response->withHeader("Location", "/admin-dashboard")->withStatus(302);
+          return $response->withHeader("Location", "/admin/dashboard")->withStatus(302);
           die();
         } elseif ($accountType == UserTypes::USER) { // If the user is a user
-          return $response->withHeader("Location", "/user-dashboard")->withStatus(302);
+          return $response->withHeader("Location", "/user/dashboard")->withStatus(302);
           die();
         } else { // debug code
           $body = $request->getParsedBody();
