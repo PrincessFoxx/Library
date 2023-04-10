@@ -1,10 +1,13 @@
 <?php
   namespace Foxx\Library\Core\Persistence;
+  use InvalidArgumentException;
+
   use Foxx\Library\Core\Model\Book;
   use Foxx\Library\Core\Model\Loan;
   use Foxx\Library\Core\Enums\GetBooksBy;
   use Foxx\Library\Core\Enums\SetBookBy;
   use Foxx\Library\Core\Exception\BookException;
+
 
   /**
    * BookManager
@@ -138,21 +141,19 @@
     }
 
     /**
-     * Get a book by criteria
-     * 
-     * Returns an array of books with the specific criteria, whether
-     * its the title, author or id. If id is specified it will check
-     * 
-     * @param GetBooksBy $getby The criteria
-     * @param mixed $value The value to check for
-     * @return Book[] An array of books
-     * @throws BookException If the book is not found.
+     * Get an array of books by the specified criteria.
+     *
+     * @param GetBooksBy $getBy The criteria by which to search for books.
+     * @param string|int $value The value to search for.
+     * @return Book[] An array of books that match the criteria.
+     * @throws BookException If no books match the criteria.
      * @author Command_String#6538
      */
-    public function getBooksBy(GetBooksBy $getby, mixed $value): array {
-      $books = array();
+    public function getBooksBy(GetBooksBy $getBy, string|int $value): array
+    {
+      $books = [];
       foreach ($this->books as $book) {
-        switch ($getby) {
+        switch ($getBy) {
           case GetBooksBy::Author:
             $get = $book->author();
             break;
@@ -165,71 +166,30 @@
           case GetBooksBy::Id:
             $get = $book->id();
             break;
+          default:
+            throw new InvalidArgumentException('Invalid search criteria.');
         }
-
-        if ($get == $value) {
+        if ($get === $value) {
           $books[] = $book;
         }
       }
       if (count($books) > 0) {
         return $books;
-      } else {
-        switch ($getby) {
-          case GetBooksBy::Author:
-            throw new BookException(BookException::NO_RECORD_BY_AUTHOR . $value, BookException::NO_RECORD_BY_AUTHOR_CODE);
-            break;
-          case GetBooksBy::Genre:
-            throw new BookException(BookException::NO_RECORD_BY_GENRE . $value, BookException::NO_RECORD_BY_GENRE_CODE);
-            break;
-          case GetBooksBy::Title:
-            throw new BookException(BookException::NO_RECORD_BY_TITLE . $value, BookException::NO_RECORD_BY_TITLE_CODE);
-            break;
-          case GetBooksBy::Id:
-            throw new BookException(BookException::NO_RECORD_BY_ID . $value, BookException::NO_RECORD_BY_ID_CODE);
-            break;
-            
+      }
+      throw new BookException(
+        match ($getBy) {
+          GetBooksBy::Author => BookException::NO_RECORD_BY_AUTHOR . $value,
+          GetBooksBy::Genre => BookException::NO_RECORD_BY_GENRE . $value,
+          GetBooksBy::Title => BookException::NO_RECORD_BY_TITLE . $value,
+          GetBooksBy::Id => BookException::NO_RECORD_BY_ID . $value,
+        },
+        match ($getBy) {
+          GetBooksBy::Author => BookException::NO_RECORD_BY_AUTHOR_CODE,
+          GetBooksBy::Genre => BookException::NO_RECORD_BY_GENRE_CODE,
+          GetBooksBy::Title => BookException::NO_RECORD_BY_TITLE_CODE,
+          GetBooksBy::Id => BookException::NO_RECORD_BY_ID_CODE,
         }
-      }
+      );
     }
 
-    // set the things for the book
-
-    /**
-     * Sets the book by the given value
-     *
-     * @param SetBookBy $setby
-     * @param string|Loan|array|int $value
-     * @param Book $book
-     * @return void
-     */
-    public function setBookBy(SetBookBy $setby, mixed $value, Book $book) {
-      switch ($setby) {
-        case SetBookBy::Author:
-          $book->author($value);
-          break;
-        case SetBookBy::Title:
-          $book->title($value);
-          break;
-        case SetBookBy::Description:
-          $book->description($value);
-          break;
-        case SetBookBy::Genres:
-          $book->genres($value);
-          break;
-        case SetBookBy::Cover:
-          $book->cover($value);
-          break;
-        case SetBookBy::AddRating:
-          $book->addRating($value);
-          break;
-        case SetBookBy::AddLoan:
-          $book->addLoan($value);
-          break;
-        case SetBookBy::Id:
-          $book->id($value);
-          break;
-      }
-
-      self::DEBUG ? $this->saveBooks() : null;
-    }
   }
