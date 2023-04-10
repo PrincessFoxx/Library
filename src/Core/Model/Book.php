@@ -22,9 +22,9 @@
      * 
      * @param string $title Title of the book
      * @param string $author Author of the book
-     * @param string[] $genres The genres the book falls under
+     * @param Array $genres The genres the book falls under
      * @param string $description A small blurb about the book, taken from Wikipedia or GoodReads
-     * @param ?Loan[] $loans An array of all loans taken out on the book
+     * @param ?Array $loans An array of all loans taken out on the book
      * @param ?float $rating The rating for the book
      * @param ?int $ratings The number of ratings for the book
      * @param ?string $id Unique ID generated for the book
@@ -38,11 +38,10 @@
       private ?string $cover = null, 
       private ?float $rating = 0, 
       private ?int $ratings = 0, 
-      private ?string $id = "" 
+      private ?string $id = null
     ) {
-      $cover = $cover ?? "/img/covers/default.jpg";
-      if ($id == "") { $id = uniqid("book_"); }
-      else {$id = $id; }
+      $this->id = is_null($id) ? uniqid('book_') : $id; // Generate a unique ID for the book if one isn't provided
+      $this->cover = is_null($cover) ? "/img/covers/default.jpg" : $cover; // Set the cover to the default cover if one isn't provided
     }
 
     /**
@@ -276,12 +275,11 @@
      * @return boolean Returns true if the loan was added and false if it is loaned out already.
      * @throws BookException if book is loaned currently
      */
-    public function addLoan(Loan $loan) {
+    public function addLoan(Loan $loan): bool {
       if (!$this->isLoaned()) { // Book not loaned -> add loan
         $this->loan[] = $loan;
         return true;
       } else { // Book loaned -> throw error
-        return false;
         throw new BookException(BookException::LOANED, BookException::LOANED_CODE);
       }
     }

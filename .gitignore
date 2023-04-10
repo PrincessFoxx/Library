@@ -1,6 +1,3 @@
 /vendor
 /src/Core/Persistence/Files
-/nbproject/private/
 /config/Cache
-/nbproject
-/test

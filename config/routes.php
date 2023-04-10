@@ -17,6 +17,21 @@
       $app->get('/unavailable', function (ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
         return $response->withStatus(503);
       });
+      $app->get('/add', function (ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
+        $book = new \Foxx\Library\Core\Model\Book(
+          "The Book",
+          "The Author",
+          array("Genre"),
+          "The Description",
+        );
+        
+        $bookManager = new \Foxx\Library\Core\Persistence\BookManager();
+        $bookManager->addBook($book);
+
+        $json = json_encode($book);
+        $response->getBody()->write($json);
+        return $response->withHeader("Content-Type", "application/json");
+      });
 
     }
     
