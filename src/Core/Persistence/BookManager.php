@@ -2,6 +2,8 @@
   namespace Foxx\Library\Core\Persistence;
   use InvalidArgumentException;
 
+  use Foxx\Library\Core\Persistence\Manager;
+
   use Foxx\Library\Core\Model\Book;
   use Foxx\Library\Core\Model\Loan;
   use Foxx\Library\Core\Enums\GetBooksBy;
@@ -17,83 +19,106 @@
    * @package Foxx\Library\Core\Persistence
    * @author Foxx Azalea Pinkerton
    */
-  class BookManager {
-    const DEBUG = true;
+  class BookManager extends Manager {
+    const FILE = __DIR__ . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . "Books.json";
 
     /**
      * @var array $books The books
      */
     private $books = array();
 
-    /**
-     * @var array $loans The loans
-     */
-    private $loans = array();
+    // /**
+    //  * @var array $loans The loans
+    //  */
+    // private $loans = array();
 
 
     public function __construct() {
-      $this->loadBooks();
+      $this->load();
     }
 
     public function __destruct() {
-      $this->saveBooks();
+      $this->save();
     }
 
     /**
-     * loadBooks
+     * load
      * 
      * Is a function that loads the books from the json file
      * 
-     * @return void
+     * @return bool
      */
-    private function loadBooks() {
-      /**
-       * @var array $books The books from the json file
-       */
-      $books = json_decode(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . "Books.json"), true);
-      foreach ($books as $book) {
-        $bookLoans = array();
-        foreach ($book["loan"] as $loan) {
-          $bookLoans[] = new Loan($loan["userId"], $loan["date"], $loan["due"], $loan["returned"], $loan["returned_date"], $loan["id"]);
+    protected function load():bool {
+      try {
+        /**
+         * @var array $books The books from the json file
+         */
+        $books = json_decode($this::FILE, true);
+        foreach ($books as $book) {
+          $bookLoans = array();
+          foreach ($book["loan"] as $loan) {
+            $bookLoans[] = new Loan($loan["userId"], $loan["date"], $loan["due"], $loan["returned"], $loan["returned_date"], $loan["id"]);
+          }
+          $this->books[] = new Book(
+            $book["title"],
+            $book["author"],
+            $book["genres"],
+            $book["description"],
+            $bookLoans,
+            $book["cover"],
+            $book["rating"],
+            $book["ratings"],
+            $book["id"]
+          );
         }
-        $this->books[] = new Book(
-          $book["title"],
-          $book["author"],
-          $book["genres"],
-          $book["description"],
-          $bookLoans,
-          $book["cover"],
-          $book["rating"],
-          $book["ratings"],
-          $book["id"]
-        );
+      } catch (\Exception $e) {
+        if(self::DEBUG) {
+          echo $e->getMessage();
+        } 
+        return false;
       }
     }
 
     /**
-     * saveBooks
+     * save
      * 
      * Is a function that saves the books to the json file
      * 
-     * @return void
+     * @return bool Whether the save was successful or not
      */
-    private function saveBooks() {
-      $books = array();
-      foreach ($this->books as $book) {
-        $books[] = $book->jsonSerialize();
+    protected function save():bool {
+      try{
+        $books = array();
+        foreach ($this->books as $book) {
+          $books[] = $book->jsonSerialize();
+        }
+        file_put_contents(__DIR__ . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . "Books.json", json_encode($books));
+        return true;
+      } catch (\Exception $e) {
+        if(self::DEBUG) {
+          echo $e->getMessage();
+        }
+        return false;
       }
-      file_put_contents(__DIR__ . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . "Books.json", json_encode($books));
     }
 
     /**
-     * addBook
+     * add
      * 
      * Is a function that adds a book to the books array
      */
-    public function addBook(Book $book) {
-      $this->books[] = $book;
-      
-      self::DEBUG ? $this->saveBooks() : null;
+    public function add(Book $book):bool {
+      try {
+        $this->books[] = $book;
+        self::DEBUG ? $this->save() : null;
+
+        return true;
+      } catch (\Exception $e) {
+        if(self::DEBUG) {
+          echo $e->getMessage();
+        }
+        return false;
+      }
     }
 
     /**
@@ -190,8 +215,6 @@
           GetBooksBy::Id => BookException::NO_RECORD_BY_ID_CODE,
         }
       );
-
-      // this is a test since i want to test the git command before i screw up the code
     }
 
   }

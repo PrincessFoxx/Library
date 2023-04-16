@@ -31,7 +31,7 @@
       private ?string $date = null,
       private ?string $due = null,
       private ?bool $returned = null,
-      private ?string $returned_date = null,
+      private ?string $returnedDate = null,
       private ?string $id = null
     ) {
       $date = date('Y-m-d');
@@ -53,42 +53,87 @@
         "date" => $this->date,
         "due" => $this->due,
         "returned" => $this->returned,
-        "returned_date" => $this->returned_date,
+        "returnedDate" => $this->returnedDate,
         "id" => $this->id,
       ];
     }
 
     /**
-     * Gets the loan by specified type
+     * Gets or sets the user ID.
      * 
-     * Fetches the specified value from loan
-     * USER_ID is the id of the user who is loaning the book.
-     * DATE is the date the loan was created.
-     * DUE is the date the loan should be returned by.
-     * RETURNED is whether the book has been returned or not.
-     * RETURNED_DATE is the date the book was returned.
-     * ID is the unique id given to the loan.
-     * 
-     * @param LoanGetBy $type
-     * @return mixed The value of the loan attribute that was requested
+     * Get or set the user ID of the user who is loaning the book.
+     *
+     * @param ?string $title The books title.
+     * @return string|self
+     * @author Command_String#6538
      */
-    public function get(LoanGetBy $getBy):mixed {
-      switch ($getBy) {
-        case LoanGetBy::USER_ID:
-          return $this->userId;
-        case LoanGetBy::DATE:
-          return $this->date;
-        case LoanGetBy::DUE:
-          return $this->due;
-        case LoanGetBy::RETURNED:
-          return $this->returned;
-        case LoanGetBy::RETURNED_DATE:
-          return $this->returned_date;
-        case LoanGetBy::ID:
-          return $this->id;
-        default:
-          return null;
-      }
+    public function userID($userID = null): string|self {
+      return is_null($userID) ? $this->userId : ($this->userId = $userID) && $this;
+    }
+
+    /**
+     * Gets or sets the date.
+     * 
+     * Get or set the date the loan was created.
+     *
+     * @param ?string $title The books title.
+     * @return string|self
+     * @author Command_String#6538
+     */
+    public function date($date = null): string|self {
+      return is_null($date) ? $this->date : ($this->date = $date) && $this;
+    }
+
+    /**
+     * Gets or sets the due date.
+     * 
+     * Get or set the date the loan should be returned by.
+     *
+     * @param ?string $title The books title.
+     * @return string|self
+     * @author Command_String#6538
+     */
+    public function due($due = null): string|self {
+      return is_null($due) ? $this->due : ($this->due = $due) && $this;
+    }
+
+    /**
+     * Gets or sets the returned status.
+     * 
+     * Get or set the returned status of the book.
+     *
+     * @param ?string $title The books title.
+     * @return string|self
+     * @author Command_String#6538
+     */
+    public function returned($returned = null): string|self {
+      return is_null($returned) ? $this->returned : ($this->returned = $returned) && $this;
+    }
+
+    /**
+     * Gets or sets the returned date.
+     * 
+     * Get or set the date the book was returned.
+     *
+     * @param ?string $title The books title.
+     * @return string|self
+     * @author Command_String#6538
+     */
+    public function returnedDate($returnedDate = null): string|self {
+      return is_null($returnedDate) ? $this->returnedDate : ($this->returnedDate = $returnedDate) && $this;
+    }
+
+    /**
+     * Gets or sets the loan ID.
+     * 
+     * Get or set the unique ID given to the loan.
+     *
+     * @param ?string $title The books title.
+     * @return string|self
+     * @author Command_String#6538
+     */
+    public function id($id = null): string|self {
+      return is_null($id) ? $this->id : ($this->id = $id) && $this;
     }
 
     /**
@@ -100,7 +145,7 @@
      */
     public function return(): void {
       $this->returned = true;
-      $this->returned_date = date("Y-m-d");
+      $this->returnedDate = date("Y-m-d");
     }
 
 

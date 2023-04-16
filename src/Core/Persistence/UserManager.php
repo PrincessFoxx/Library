@@ -17,6 +17,7 @@
    */
   final class UserManager {
     const DEBUG = true;
+    const FILE = __DIR__ . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . "Users.json";
 
     /**
      * @var array $users The users in the database
@@ -24,52 +25,68 @@
     private array $users = array();
 
     public function __construct() {
-      $this->loadUsers();
+      $this->load();
     }
 
     public function __destruct() {
-      $this->saveUsers();
+      $this->save();
     }
 
     /**
-     * loadUsers
+     * load
      * 
      * Loads the users from the database
      *
      * @return void
      */
-    private function loadUsers(): void {
-      /**
-       * @var array $users The users from the database
-       */
-      $users = json_decode(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . "Users.json"), true);
-      foreach ($users as $user) {
-        $this->users[] = new User(
-          $user["fname"],
-          $user["lname"],
-          $user["email"],
-          $user["password"],
-          UserTypes::fromString($user["role"]),
-          $user["id"],
-          $user["books"],
-          $user["notes"]
-        );
+    protected function load(): bool {
+      try {
+        /**
+         * @var array $users The users from the database
+         */
+        $users = json_decode(self::FILE, true);
+          
+        foreach ($users as $user) {
+          $this->users[] = new User(
+            $user["fname"],
+            $user["lname"],
+            $user["email"],
+            $user["password"],
+            UserTypes::fromString($user["role"]),
+            $user["id"],
+            $user["books"],
+            $user["notes"]
+          );
+        }
+      } catch (\Exception $e) {
+        if (self::DEBUG) {
+          echo $e->getMessage();
+        }
+        return false;
       }
     }
 
     /**
-     * saveUsers
+     * save
      * 
      * Saves the users to the database
      *
      * @return void
      */
-    private function saveUsers(): void {
-      $users = array();
-      foreach ($this->users as $user) {
-        $users[] = $user->jsonSerialize();
+    protected function save(): bool {
+      try {
+        $users = array();
+        foreach ($this->users as $user) {
+          $users[] = $user->jsonSerialize();
+        }
+        file_put_contents(__DIR__ . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . "Users.json", json_encode($users));
+        return true;
+      } catch (\Exception $e) {
+        if (self::DEBUG) {
+          echo $e->getMessage();
+        }
+        return false;
       }
-      file_put_contents(__DIR__ . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . "Users.json", json_encode($users));
     }
 
     /**
@@ -120,15 +137,23 @@
     }
 
     /**
-     * AddUser
+     * add
      * 
      * Adds a user to the database
      * 
      * @param User $user
      * @return void
      */
-    public function AddUser(User $user): void {
-      $this->users[] = $user;
-      self::DEBUG ? $this->saveUsers() : null;
+    public function add(User $user): bool {
+      try {
+        $this->users[] = $user;
+        self::DEBUG ? $this->save() : null;
+        return true;
+      } catch (\Exception $e) {
+        if (self::DEBUG) {
+          echo $e->getMessage();
+        }
+        return false;
+      }
     }
   }

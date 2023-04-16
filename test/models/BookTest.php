@@ -40,7 +40,7 @@ class BookTest extends TestCase
 
     public function testSetsInfomation()
     {
-        $this->book->title("New Title");
+        $this->book->title("New Title"); 
         $this->book->author("New Author");
         $this->book->genres(array("New Genre"));
         $this->book->description("New Description");

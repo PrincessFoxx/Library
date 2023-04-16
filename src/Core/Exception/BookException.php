@@ -3,106 +3,41 @@
 
   use Exception;
   use Throwable;
+  use JsonSerializable;
+
+  use Foxx\Library\Core\Model\Book;
 
   /**
    * BookException
    * 
-   * Is an exception that is thrown when there is an error with the book class.
+   * Is an exception that is thrown when there is a problem with a book
+   * 
+   * @param string $message The message of the exception
+   * @param int $code The code of the exception
+   * @param Throwable|null $previous The previous exception
+   * @param Book|null $book The book that caused the exception
    * 
    * @package Foxx\Library\Core\Exception
+   * @abstract
    * @author Foxx Azalea Pinkerton
+   * @version 1.0.0
    */
-  class BookException extends Exception {
-
-    /**
-     * @var string The error message for when the book is already checked out.
-     */
-    const LOANED = "Another user is already using the book! ";
-
-    /**
-     * @var string The error message for when the book is not found.
-     */
-    const NO_RECORD = "There are no records of this book in the library! ";
-
-    /**
-     * @var string The error message for when the book is not found by the author.
-     */
-    const NO_RECORD_BY_AUTHOR = "No objects with this author were found! ";
-
-    /**
-     * @var string The error message for when the book is not found by the ID.
-     */
-    const NO_RECORD_BY_ID = "No objects with this id were found! ";
-
-    /**
-     * @var string The error message for when the book is not found by the title.
-     */
-    const NO_RECORD_BY_TITLE = "No objects with this title were found! ";
-
-    /**
-     * @var string The error message for when the book is not found by the genre.
-     */
-    const NO_RECORD_BY_GENRE = "No objects with this genre were found! ";
-
-
-    /**
-     * @var integer The error code for when the book is already checked out.
-     */
-    const LOANED_CODE = 0x01;
-
-    /**
-     * @var integer The error code for when the book is not found.
-     */
-    const NO_RECORD_CODE = 0x02;
-
-    /**
-     * @var integer The error code for when the book is not found by the author.
-     */
-    const NO_RECORD_BY_AUTHOR_CODE = 0x03;
-
-    /**
-     * @var integer The error code for when the book is not found by the ID.
-     */
-    const NO_RECORD_BY_ID_CODE = 0x04;
-
-    /**
-     * @var integer The error code for when the book is not found by the title.
-     */
-    const NO_RECORD_BY_TITLE_CODE = 0x05;
-
-    /**
-     * @var integer The error code for when the book is not found by the genre.
-     */
-    const NO_RECORD_BY_GENRE_CODE = 0x06;
-
-
-
-    /**
-     * BookException
-     * 
-     * Is the constructor for the BookException class.
-     * 
-     * @param string $message The error message.
-     * @param int $code The error code.
-     * @param Throwable $previous The previous error.
-     */
-    public function __construct(
-      string $message,
-      int $code = 0,
-      Throwable $previous = null
-    ) {
-      parent::__construct($message, $code, $previous); // Call the parent constructor
-    }
-
-    /**
-     * __toString
-     * 
-     * Is the function that is called when the exception is converted to a string.
-     * 
-     * @return string The error message.
-     */
-    public function __toString() {
-      $errorMessage = "ERROR " . __CLASS__ . " [{$this->code}]: {$this->message} in {$this->file} on line {$this->line}";
-      return $errorMessage;
-    }
+  abstract class BookException extends Exception implements JsonSerializable
+  {
+      protected ?Book $book;
+  
+      public function __construct(string $message, int $code, ?Throwable $previous = null, ?Book $book = null)
+      {
+          parent::__construct($message, $code, $previous);
+          $this->book = $book;
+      }
+  
+      public function getBook(): ?Book
+      {
+          return $this->book;
+      }
+  
+      abstract public function __toString(): string;
+      abstract public function jsonSerialize(): array;
   }
+  
